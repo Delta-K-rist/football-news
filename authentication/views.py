@@ -72,9 +72,17 @@ def register(request):
 
 @csrf_exempt
 def logout(request):
-    logout(request)
-    return JsonResponse({
-        "status": True,
-        "message": "Logout successful!"
-    }, status=200)
+    username = request.user.username
+    try:
+        auth_logout(request)
+        return JsonResponse({
+            "username": username,
+            "status": True,
+            "message": "Logged out successfully!"
+        }, status=200)
+    except:
+        return JsonResponse({
+            "status": False,
+            "message": "Logout failed."
+        }, status=401)
 
